@@ -1,0 +1,112 @@
+﻿@model DotNetIdentity.ViewModels.RegisterViewModel
+
+@{
+    ViewData["Title"] = "Registro de usuario";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Registro de usuario</h1>
+<form asp-controller="Accounts" asp-action="Register" method="post" role="form">
+    <div class="text-danger" asp-validation-summary="All"></div>
+
+    <div class="form-group">
+        <label asp-for="UserName" class="col-md-2"></label>
+        <div class="col-md-10">
+            <input asp-for="UserName" class="form-control" />
+            <span asp-validation-for="UserName" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Birthdate" class="col-md-2"></label>
+        <div class="col-md-10">
+            <input asp-for="Birthdate" class="form-control" />
+            <span asp-validation-for="Birthdate" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Email" class="col-md-2"></label>
+        <div class="col-md-10">
+            <input asp-for="Email" class="form-control" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="PhoneNumber" class="col-md-2"></label>
+        <div class="col-md-10">
+            <input asp-for="PhoneNumber" class="form-control" />
+            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Url" class="col-md-2"></label>
+        <div class="col-md-10">
+            <input asp-for="Url" class="form-control" />
+            <span asp-validation-for="Url" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="CountryCode" class="col-md-2"></label>
+        <div class="col-md-10">
+            <input asp-for="CountryCode" class="form-control" />
+            <span asp-validation-for="CountryCode" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="City" class="col-md-2"></label>
+        <div class="col-md-10">
+            <input asp-for="City" class="form-control" />
+            <span asp-validation-for="City" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Address" class="col-md-2"></label>
+        <div class="col-md-10">
+            <input asp-for="Address" class="form-control" />
+            <span asp-validation-for="Address" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Password" class="col-md-2"></label>
+        <div class="col-md-10">
+            <input asp-for="Password" class="form-control" />
+            <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ConfirmPassword" class="col-md-2"></label>
+        <div class="col-md-10">
+            <input asp-for="ConfirmPassword" class="form-control" />
+            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Address" class="col-md-2"></label>
+        <div class="col-md-10">
+            <input asp-for="Address" class="form-control" />
+            <span asp-validation-for="Address" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-10">
+            <button type="submit" class="btn btn-success">Registrarse</button>
+        </div>
+    </div>
+
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
