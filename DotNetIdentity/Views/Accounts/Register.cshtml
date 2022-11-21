@@ -16,19 +16,19 @@
                 <div class="col-sm-6">
                     <div class="mb-3">
                         <label asp-for="UserName" class="col-md-3"></label>
-                        <input asp-for="UserName" class="form-control" />
+                        <input asp-for="UserName" class="form-control" placeholder="Ingresa tu nombre..."/>
                         <span asp-validation-for="UserName" class="text-danger"></span>
                     </div>
 
                     <div class="mb-3">
                         <label asp-for="Email" class="col-md-3"></label>
-                        <input asp-for="Email" class="form-control" />
+                        <input asp-for="Email" class="form-control" placeholder="Ingresa tu email..."/>
                         <span asp-validation-for="Email" class="text-danger"></span>
                     </div>
 
                     <div class="mb-3">
                         <label asp-for="Url" class="col-md-3"></label>
-                        <input asp-for="Url" class="form-control" />
+                        <input asp-for="Url" class="form-control" placeholder="Ingresa tu URL..."/>
                         <span asp-validation-for="Url" class="text-danger"></span>
                     </div>
                 </div>
@@ -36,13 +36,13 @@
                 <div class="col-sm-6">
                     <div class="mb-3">
                         <label asp-for="Birthdate" class="col-md-3"></label>
-                        <input asp-for="Birthdate" class="form-control" />
+                        <input type="text" name="Birthdate" class="form-control" id="datePicker" placeholder="Ejemplo: 1997-05-30"/>
                         <span asp-validation-for="Birthdate" class="text-danger"></span>
                     </div>
 
                     <div class="mb-3">
                         <label asp-for="PhoneNumber" class="col-md-3"></label>
-                        <input asp-for="PhoneNumber" class="form-control" />
+                        <input asp-for="PhoneNumber" class="form-control" placeholder="Ingresa tu numero telefonico..."/>
                         <span asp-validation-for="PhoneNumber" class="text-danger"></span>
                     </div>
                 </div>
@@ -52,13 +52,13 @@
                 <div class="col-sm-6">
                     <div class="mb-3">
                         <label asp-for="Country" class="col-md-3"></label>
-                        <input asp-for="Country" class="form-control" />
+                        <input asp-for="Country" class="form-control" placeholder="Ingresa tu pais..."/>
                         <span asp-validation-for="Country" class="text-danger"></span>
                     </div>
 
                     <div class="mb-3">
                         <label asp-for="City" class="col-md-3"></label>
-                        <input asp-for="City" class="form-control" />
+                        <input asp-for="City" class="form-control" placeholder="Ingresa tu ciudad..."/>
                         <span asp-validation-for="City" class="text-danger"></span>
                     </div>
                 </div>
@@ -66,13 +66,13 @@
                 <div class="col-sm-6">
                     <div class="mb-3">
                         <label asp-for="CountryCode" class="col-md-3"></label>
-                        <input asp-for="CountryCode" class="form-control" />
+                        <input asp-for="CountryCode" class="form-control" placeholder="Ingresa el codigo de tu pais..."/>
                         <span asp-validation-for="CountryCode" class="text-danger"></span>
                     </div>
 
                     <div class="mb-3">
                         <label asp-for="Address" class="col-md-3"></label>
-                        <input asp-for="Address" class="form-control" />
+                        <input asp-for="Address" class="form-control" placeholder="Ingresa tu direccion..."/>
                         <span asp-validation-for="Address" class="text-danger"></span>
                     </div>
                 </div>
@@ -81,13 +81,13 @@
             <div class="row mt-4">
                 <div class="col mb-3">
                     <label asp-for="Password" class="col-md-3"></label>
-                    <input asp-for="Password" class="form-control" />
+                    <input asp-for="Password" class="form-control" placeholder="Ingresa tu contraseña..."/>
                     <span asp-validation-for="Password" class="text-danger"></span>
                 </div>
 
                 <div class="col mb-3">
                     <label asp-for="ConfirmPassword" class="col-md-3"></label>
-                    <input asp-for="ConfirmPassword" class="form-control" />
+                    <input asp-for="ConfirmPassword" class="form-control" placeholder="Ingresa tu contraseña nuevaente..."/>
                     <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
                 </div>
             </div>
