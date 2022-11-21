@@ -4,9 +4,7 @@ namespace DotNetIdentity.Models;
 
 public class AppUser : IdentityUser
 {
-    public string CustomUserName { get; set; }
     public DateTime Birthdate { get; set; }
-    public string CustomPhoneNumber { get; set; }
     public string Url { get; set; }
     public int CountryCode { get; set; }
     public string Country { get; set; }
