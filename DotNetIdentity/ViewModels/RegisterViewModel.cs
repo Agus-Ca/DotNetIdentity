@@ -4,6 +4,15 @@ namespace DotNetIdentity.ViewModels
 {
     public class RegisterViewModel
     {
+
+        [Required(ErrorMessage = "El campo nombre es obligatorio")]
+        public string UserName { get; set; }
+
+        [Required(ErrorMessage = "El campo fecha de nachimiento es obligatorio")]
+        public DateTime Birthdate { get; set; }
+
+        public string PhoneNumber { get; set; }
+
         [Required(ErrorMessage = "El campo email es obligatorio")]
         [EmailAddress]
         public string Email { get; set; }
@@ -20,20 +29,12 @@ namespace DotNetIdentity.ViewModels
         [Display(Name = "Confirmar Contraseña")]
         public string ConfirmPassword { get; set; }
 
-        [Required(ErrorMessage = "El campo nombre es obligatorio")]
-        public string UserName { get; set; }
-
-        [Required(ErrorMessage = "El campo fecha de nachimiento es obligatorio")]
-        public DateTime Birthdate { get; set; }
-
-        public string PhoneNumber { get; set; }
-
         public string Url { get; set; }
-
-        public int CountryCode { get; set; }
 
         [Required(ErrorMessage = "El campo pais es obligatorio")]
         public string Country { get; set; }
+
+        public int CountryCode { get; set; }
 
         public string City { get; set; }
 
