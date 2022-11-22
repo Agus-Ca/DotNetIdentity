@@ -71,4 +71,24 @@ public class AccountsController : Controller
 
     [HttpGet]
     public IActionResult Login() => View();
+
+    [HttpPost]
+    public async Task<IActionResult> Login(LoginViewModel loginViewModel)
+    {
+        if (ModelState.IsValid)
+        {
+            var resultado = await _signInManager.PasswordSignInAsync(loginViewModel.Email, loginViewModel.Password, loginViewModel.RememberMe, lockoutOnFailure: false);
+
+            if (resultado.Succeeded)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                ModelState.AddModelError(String.Empty, "Acceso invalido");
+                return View(loginViewModel);
+            }
+        }
+        return View(loginViewModel);
+    }
 }
