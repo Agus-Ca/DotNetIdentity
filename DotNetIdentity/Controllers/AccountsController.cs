@@ -24,12 +24,21 @@ public class AccountsController : Controller
     }
 
     [HttpGet]
-    public IActionResult Register() => View(new RegisterViewModel());
+    public IActionResult Register(string returnUrl = null)
+    {
+        ViewData["ReturnUrl"] = returnUrl;
+        returnUrl ??= Url.Content("~/");
+
+        return LocalRedirect(returnUrl);
+    }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Register(RegisterViewModel registerViewModel)
+    public async Task<IActionResult> Register(RegisterViewModel registerViewModel, string returnUrl = null)
     {
+        ViewData["ReturnUrl"] = returnUrl;
+        returnUrl ??= Url.Content("~/");
+
         if (ModelState.IsValid)
         {
             var usuario = new AppUser
@@ -52,7 +61,7 @@ public class AccountsController : Controller
             {
                 await _signInManager.SignInAsync(usuario, isPersistent: false);
 
-                return RedirectToAction("Index", "Home");
+                return LocalRedirect(returnUrl);
             }
 
             ValidateErrors(resultado);
@@ -74,6 +83,7 @@ public class AccountsController : Controller
     public IActionResult Login(string returnUrl = null)
     {
         ViewData["ReturnUrl"] = returnUrl;
+        returnUrl ??= Url.Content("~/");
         return View();
     }
 
@@ -82,6 +92,7 @@ public class AccountsController : Controller
     public async Task<IActionResult> Login(LoginViewModel loginViewModel, string returnUrl = null)
     {
         ViewData["ReturnUrl"] = returnUrl;
+        returnUrl ??= Url.Content("~/");
 
         if (ModelState.IsValid)
         {
@@ -89,7 +100,7 @@ public class AccountsController : Controller
 
             if (resultado.Succeeded)
             {
-                return Redirect(returnUrl);
+                return LocalRedirect(returnUrl);
             }
             else
             {
