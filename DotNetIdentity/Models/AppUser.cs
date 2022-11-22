@@ -4,6 +4,7 @@ namespace DotNetIdentity.Models;
 
 public class AppUser : IdentityUser
 {
+    public string Name { get; set; }
     public DateTime Birthdate { get; set; }
     public string Url { get; set; }
     public int CountryCode { get; set; }
