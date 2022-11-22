@@ -27,6 +27,7 @@ public class AccountsController : Controller
     public IActionResult Register() => View(new RegisterViewModel());
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Register(RegisterViewModel registerViewModel)
     {
         if (ModelState.IsValid)
@@ -73,6 +74,7 @@ public class AccountsController : Controller
     public IActionResult Login() => View();
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Login(LoginViewModel loginViewModel)
     {
         if (ModelState.IsValid)
@@ -90,5 +92,13 @@ public class AccountsController : Controller
             }
         }
         return View(loginViewModel);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Logout()
+    {
+        await _signInManager.SignOutAsync();
+        return RedirectToAction(nameof(HomeController.Index), "Home");
     }
 }
