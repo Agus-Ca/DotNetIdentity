@@ -3,7 +3,7 @@ using System.Xml.Linq;
 
 namespace DotNetIdentity.ViewModels;
 
-public class AccessViewModel
+public class LoginViewModel
 {
     [Required(ErrorMessage = "El campo email es obligatorio")]
     [EmailAddress]
