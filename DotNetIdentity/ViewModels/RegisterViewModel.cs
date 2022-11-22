@@ -9,7 +9,7 @@ namespace DotNetIdentity.ViewModels
         public string UserName { get; set; }
 
         [Required(ErrorMessage = "El campo fecha de nachimiento es obligatorio")]
-        public DateTime Birthdate { get; set; }
+        public DateTime? Birthdate { get; set; }
 
         public string PhoneNumber { get; set; }
 
