@@ -71,19 +71,25 @@ public class AccountsController : Controller
     }
 
     [HttpGet]
-    public IActionResult Login() => View();
+    public IActionResult Login(string returnUrl = null)
+    {
+        ViewData["ReturnUrl"] = returnUrl;
+        return View();
+    }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Login(LoginViewModel loginViewModel)
+    public async Task<IActionResult> Login(LoginViewModel loginViewModel, string returnUrl = null)
     {
+        ViewData["ReturnUrl"] = returnUrl;
+
         if (ModelState.IsValid)
         {
             var resultado = await _signInManager.PasswordSignInAsync(loginViewModel.Email, loginViewModel.Password, loginViewModel.RememberMe, lockoutOnFailure: false);
 
             if (resultado.Succeeded)
             {
-                return RedirectToAction("Index", "Home");
+                return Redirect(returnUrl);
             }
             else
             {

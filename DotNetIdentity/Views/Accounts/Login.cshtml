@@ -8,7 +8,7 @@
 <div class="card">
     <div class="card-body">
         <h3 class="card-title text-center">Login de usuario</h3>
-        <form asp-controller="Accounts" asp-action="Login" method="post" role="form">
+        <form asp-controller="Accounts" asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" role="form">
             <hr />
             <div class="text-danger" asp-validation-summary="All"></div>
 
