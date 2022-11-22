@@ -68,4 +68,7 @@ public class AccountsController : Controller
             ModelState.AddModelError(String.Empty, error.Description);
         }
     }
+
+    [HttpGet]
+    public IActionResult Login() => View();
 }
