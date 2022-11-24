@@ -24,12 +24,9 @@ public class AccountsController : Controller
     }
 
     [HttpGet]
-    public IActionResult Register(string returnUrl = null)
+    public IActionResult Register()
     {
-        ViewData["ReturnUrl"] = returnUrl;
-        returnUrl ??= Url.Content("~/");
-
-        return LocalRedirect(returnUrl);
+        return View();
     }
 
     [HttpPost]
@@ -80,10 +77,8 @@ public class AccountsController : Controller
     }
 
     [HttpGet]
-    public IActionResult Login(string returnUrl = null)
+    public IActionResult Login()
     {
-        ViewData["ReturnUrl"] = returnUrl;
-        returnUrl ??= Url.Content("~/");
         return View();
     }
 
@@ -96,12 +91,16 @@ public class AccountsController : Controller
 
         if (ModelState.IsValid)
         {
-            var resultado = await _signInManager.PasswordSignInAsync(loginViewModel.Email, loginViewModel.Password, loginViewModel.RememberMe, lockoutOnFailure: false);
+            var resultado = await _signInManager.PasswordSignInAsync(loginViewModel.Email, loginViewModel.Password, loginViewModel.RememberMe, lockoutOnFailure: true);
 
             if (resultado.Succeeded)
             {
                 return LocalRedirect(returnUrl);
             }
+            else if (resultado.IsLockedOut)
+            {
+                return View("Blocked");
+            } 
             else
             {
                 ModelState.AddModelError(String.Empty, "Acceso invalido");
