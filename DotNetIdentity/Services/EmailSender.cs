@@ -20,7 +20,7 @@ public class EmailSender : IEmailSender
     {
         mailJetOptions = _configuration.GetSection("MailJet").Get<MailJetOptions>();
 
-        MailjetClient client = new MailjetClient(mailJetOptions.ApiKey, mailJetOptions.SecretKey)
+        MailjetClient client = new(mailJetOptions.ApiKey, mailJetOptions.SecretKey)
         {
             Version = ApiVersion.V3_1,
         };
@@ -36,7 +36,7 @@ public class EmailSender : IEmailSender
                     "From",
                     new JObject 
                     {
-                        {"Email", "agu.e.casado@gmail.com"},
+                        {"Email", "dotnetTesting@proton.me"},
                         {"Name", "Agustín"}
                     }
                 }, 
@@ -46,19 +46,13 @@ public class EmailSender : IEmailSender
                     {
                         new JObject 
                         {
-                            email,
+                            {"Email", email },
                             {"Name", "Estimado/a" }
                         }
                     }
                 },
-                {
-                   "Subject",
-                   subject
-                },
-                {
-                    "HTMLPart",
-                    htmlMessage
-                }
+                {"Subject", subject},
+                {"HTMLPart", htmlMessage}
             }
         });
 

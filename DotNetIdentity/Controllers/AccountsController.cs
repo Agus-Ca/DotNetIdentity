@@ -1,6 +1,8 @@
 ﻿using DotNetIdentity.Models;
 using DotNetIdentity.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DotNetIdentity.Controllers;
@@ -9,13 +11,16 @@ public class AccountsController : Controller
 {
     private readonly UserManager<IdentityUser> _userManager;
     private readonly SignInManager<IdentityUser> _signInManager;
+    private readonly IEmailSender _emailSender;
 
     public AccountsController(
         UserManager<IdentityUser> userManager,
-        SignInManager<IdentityUser> signInManager)
+        SignInManager<IdentityUser> signInManager,
+        IEmailSender emailSender)
     {
         _userManager = userManager;
         _signInManager = signInManager;
+        _emailSender = emailSender;
     }
 
     public IActionResult Index()
@@ -120,6 +125,37 @@ public class AccountsController : Controller
 
     [HttpGet]
     public IActionResult ForgottenPassword()
+    {
+        return View();
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> ForgottenPassword(ForgottenPasswordViewModel forgottenPasswordViewModel)
+    {
+        if (ModelState.IsValid)
+        {
+            var user = await _userManager.FindByEmailAsync(forgottenPasswordViewModel.Email);
+            if (user == null)
+            {
+                return RedirectToAction("ConfirmPassword");
+            }
+
+            var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+            var returnUrl = Url.Action("Reset password", "Accounts", new{userId = user.Id, code}, protocol: HttpContext.Request.Scheme);
+           
+            await _emailSender.SendEmailAsync(forgottenPasswordViewModel.Email, "Recuperar contraseña - DotNetIdentity", 
+                "Por favor, recupere su contraseña dando <a href=\"" + returnUrl + "\">click aqui!</a>");
+
+            return RedirectToAction("ConfirmPassword");
+        }
+
+        return View(forgottenPasswordViewModel);
+    }
+
+    [HttpGet]
+    [AllowAnonymous]
+    public IActionResult ConfirmPassword()
     {
         return View();
     }
