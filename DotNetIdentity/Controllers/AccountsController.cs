@@ -167,4 +167,34 @@ public class AccountsController : Controller
     {
         return code == null ? View("Error") : View();
     }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> ResetPassword(PasswordRecoveryViewModel passwordRecoveryViewModel)
+    {
+        if (ModelState.IsValid)
+        {
+            var user = await _userManager.FindByEmailAsync(passwordRecoveryViewModel.Email);
+            if (user == null)
+            {
+                return RedirectToAction("ConfirmPasswordRecovery");
+            }
+
+            var result = await _userManager.ResetPasswordAsync(user, passwordRecoveryViewModel.Code, passwordRecoveryViewModel.Password);
+            if (result.Succeeded)
+            {
+                return RedirectToAction("ConfirmPasswordRecovery");
+            }
+
+            ValidateErrors(result);
+        }
+
+        return View(passwordRecoveryViewModel);
+    }
+
+    [HttpGet]
+    public IActionResult ConfirmPasswordRecovery()
+    {
+        return View();
+    }
 }
