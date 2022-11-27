@@ -142,7 +142,7 @@ public class AccountsController : Controller
             }
 
             var code = await _userManager.GeneratePasswordResetTokenAsync(user);
-            var returnUrl = Url.Action("Reset password", "Accounts", new{userId = user.Id, code}, protocol: HttpContext.Request.Scheme);
+            var returnUrl = Url.Action("ResetPassword", "Accounts", new{userId = user.Id, code}, protocol: HttpContext.Request.Scheme);
            
             await _emailSender.SendEmailAsync(forgottenPasswordViewModel.Email, "Recuperar contraseña - DotNetIdentity", 
                 "Por favor, recupere su contraseña dando <a href=\"" + returnUrl + "\">click aqui!</a>");
@@ -158,5 +158,13 @@ public class AccountsController : Controller
     public IActionResult ConfirmPassword()
     {
         return View();
+    }
+
+    // PasswordRecovery
+    [HttpGet]
+    [AllowAnonymous]
+    public IActionResult ResetPassword(string code=null)
+    {
+        return code == null ? View("Error") : View();
     }
 }
