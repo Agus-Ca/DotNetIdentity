@@ -43,7 +43,7 @@ public class AccountsController : Controller
 
         if (ModelState.IsValid)
         {
-            var usuario = new AppUser
+            var user = new AppUser
             {
                 UserName = registerViewModel.Email,
                 Name = registerViewModel.UserName,
@@ -57,11 +57,18 @@ public class AccountsController : Controller
                 Address = registerViewModel.Address,
                 State = registerViewModel.State
             };
-            var resultado = await _userManager.CreateAsync(usuario, registerViewModel.Password);
+            var resultado = await _userManager.CreateAsync(user, registerViewModel.Password);
 
             if (resultado.Succeeded)
             {
-                await _signInManager.SignInAsync(usuario, isPersistent: false);
+                // Mail confirmation
+                var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                var confirmEmailUrl = Url.Action("EmailConfirmation", "Accounts", new { userId = user.Id, code }, protocol: HttpContext.Request.Scheme);
+                await _emailSender.SendEmailAsync(registerViewModel.Email, "Confirmar cuenta - DotNetIdentity",
+                    "Por favor, confirme su cuenta dando <a href=\"" + confirmEmailUrl + "\">click aqui!</a>");
+
+                // Register
+                await _signInManager.SignInAsync(user, isPersistent: false);
 
                 return LocalRedirect(returnUrl);
             }
@@ -160,7 +167,7 @@ public class AccountsController : Controller
         return View();
     }
 
-    // PasswordRecovery
+    // Password recovery
     [HttpGet]
     [AllowAnonymous]
     public IActionResult ResetPassword(string code=null)
@@ -193,8 +200,30 @@ public class AccountsController : Controller
     }
 
     [HttpGet]
+    [AllowAnonymous]
     public IActionResult ConfirmPasswordRecovery()
     {
         return View();
+    }
+
+    // Email confirmation
+
+    [HttpGet]
+    [AllowAnonymous]
+    public async Task<IActionResult> EmailConfirmation(string userId, string code)
+    {
+        if (userId == null || code == null)
+        {
+            return View("Error");
+        }
+
+        var user = await _userManager.FindByIdAsync(userId);
+        if (user == null)
+        {
+            return View("Error");
+        }
+
+        var result = await _userManager.ConfirmEmailAsync(user, code);
+        return View(result.Succeeded ? "EmailConfirmation" : "Error");
     }
 }
