@@ -32,6 +32,13 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.Lockout.MaxFailedAccessAttempts = 3;
 });
 
+// Facebook auth
+builder.Services.AddAuthentication().AddFacebook(options =>
+{
+    options.AppId = builder.Configuration["FacebookLogin:AppId"];
+    options.AppSecret = builder.Configuration["FacebookLogin:AppSecret"];
+});
+
 // IEmailSender
 builder.Services.AddTransient<IEmailSender, EmailSender>();
 
