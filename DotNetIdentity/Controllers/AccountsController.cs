@@ -1,5 +1,6 @@
 ﻿using DotNetIdentity.Models;
 using DotNetIdentity.ViewModels;
+using Mailjet.Client.Resources;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -225,5 +226,16 @@ public class AccountsController : Controller
 
         var result = await _userManager.ConfirmEmailAsync(user, code);
         return View(result.Succeeded ? "EmailConfirmation" : "Error");
+    }
+
+    // External logins
+    [HttpPost]
+    [AllowAnonymous]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> ExternalAccess(string provider, string returnUrl = null)
+    {
+        var redirectToUrl = Url.Action("ExternalAccessCallback", "Accounts", new { ReturnUrl = returnUrl}, protocol: HttpContext.Request.Scheme);
+        var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectToUrl);
+        return Challenge(properties, provider);
     }
 }
