@@ -273,7 +273,7 @@ public class AccountsController : Controller
             ViewData["ProviderDisplayName"] = info.ProviderDisplayName;
             var email = info.Principal.FindFirstValue(ClaimTypes.Email);
             var name = info.Principal.FindFirstValue(ClaimTypes.Name);
-            return View("ExternalAccessConfirmation", new ExternalAccessConfrimationViewModel { Email = email, Name = name });
+            return View("ExternalAccessConfirmation", new ExternalAccessConfirmationViewModel { Email = email, Name = name });
         }
     }
 }

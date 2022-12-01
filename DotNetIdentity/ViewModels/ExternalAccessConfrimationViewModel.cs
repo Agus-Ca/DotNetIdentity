@@ -2,7 +2,7 @@
 
 namespace DotNetIdentity.ViewModels;
 
-public class ExternalAccessConfrimationViewModel
+public class ExternalAccessConfirmationViewModel
 {
     [Required]
     [EmailAddress]

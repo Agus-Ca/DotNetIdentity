@@ -1,0 +1,37 @@
+﻿@using DotNetIdentity.ViewModels
+
+@model ExternalAccessConfirmationViewModel
+
+<h2 class="text-info">Registro</h2>
+<h3>Asociar su cuenta de: @ViewData["ProviderDisplayName"].</h3>
+
+<form asp-controller="Accounts" asp-action="ExternalAccessConfirmation" method="post" asp-route-returnurl="@ViewData["ReturnUrl"]">
+    <hr/>
+
+    <div class="text-danger" asp-validation-summary="All"></div>
+
+    <p>
+        Usted ha ingresado correctamente con <strong>@ViewData["ProviderDisplayName"]</strong>.
+        Ingrese un nombre de usuario para este sitioy  a continuación haga click en el botón registrarse para finalizar el inicio de sesión.
+    </p>
+
+    <div class="form-group">
+        <label asp-for="Email" class="col-md-3"></label>
+        <div class="col-md-10">
+            <input asp-for="Email" class="form-control" placeholder="Ingresa tu email..." />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-2 mt-3">
+            <button type="submit" class="btn btn-primary form-control">Registrarse</button>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
