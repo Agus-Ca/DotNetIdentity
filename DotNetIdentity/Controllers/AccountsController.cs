@@ -276,4 +276,43 @@ public class AccountsController : Controller
             return View("ExternalAccessConfirmation", new ExternalAccessConfirmationViewModel { Email = email, Name = name });
         }
     }
+
+    [HttpPost]
+    [AllowAnonymous]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> ExternalAccessConfirmation(ExternalAccessConfirmationViewModel externalAccessConfirmationViewModel, string returnUrl = null)
+    {
+        returnUrl = returnUrl ?? Url.Content("~/");
+
+        if (ModelState.IsValid)
+        {
+            var information = await _signInManager.GetExternalLoginInfoAsync();
+            if (information == null)
+            {
+                return View("Error");
+            }
+
+            var user = new AppUser { 
+                UserName = externalAccessConfirmationViewModel.Email, 
+                Email = externalAccessConfirmationViewModel.Email,
+                Name = externalAccessConfirmationViewModel.Name,
+            };
+
+            var result = await _userManager.CreateAsync(user);
+            if (result.Succeeded)
+            {
+                result = await _userManager.AddLoginAsync(user, information);
+                if (result.Succeeded)
+                {
+                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    await _signInManager.UpdateExternalAuthenticationTokensAsync(information);
+                    return LocalRedirect(returnUrl);
+                }
+            }
+
+            ValidateErrors(result);
+        }
+        ViewData["ReturnUrl"] = returnUrl;
+        return View(externalAccessConfirmationViewModel);
+    }
 }
