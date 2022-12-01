@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace DotNetIdentity.Controllers;
 
@@ -232,10 +233,47 @@ public class AccountsController : Controller
     [HttpPost]
     [AllowAnonymous]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> ExternalAccess(string provider, string returnUrl = null)
+    public IActionResult ExternalAccess(string provider, string returnUrl = null)
     {
         var redirectToUrl = Url.Action("ExternalAccessCallback", "Accounts", new { ReturnUrl = returnUrl}, protocol: HttpContext.Request.Scheme);
         var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectToUrl);
         return Challenge(properties, provider);
+    }
+
+    [HttpPost]
+    [AllowAnonymous]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> ExternalAccessCallback(string returnUrl = null, string error = null)
+    {
+        returnUrl ??= Url.Content("~/");
+        if (error != null)
+        {
+            ModelState.AddModelError(string.Empty, $"External access error: {error}");
+            return View(nameof(Login));
+        }
+
+        var info = await _signInManager.GetExternalLoginInfoAsync();
+        if (info != null)
+        {
+            return RedirectToAction(nameof(Login));
+        }
+
+        // Access
+        var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false);
+        if (result.Succeeded)
+        {
+            // Update tokens
+            await _signInManager.UpdateExternalAuthenticationTokensAsync(info);
+            return LocalRedirect(returnUrl);
+        }
+        else
+        {
+            // User do not have account
+            ViewData["ReturnUrl"] = returnUrl;
+            ViewData["ProviderDisplayName"] = info.ProviderDisplayName;
+            var email = info.Principal.FindFirstValue(ClaimTypes.Email);
+            var name = info.Principal.FindFirstValue(ClaimTypes.Name);
+            return View("ExternalAccessConfirmation", new ExternalAccessConfrimationViewModel { Email = email, Name = name });
+        }
     }
 }
