@@ -235,14 +235,13 @@ public class AccountsController : Controller
     [ValidateAntiForgeryToken]
     public IActionResult ExternalAccess(string provider, string returnUrl = null)
     {
-        var redirectToUrl = Url.Action("ExternalAccessCallback", "Accounts", new { ReturnUrl = returnUrl}, protocol: HttpContext.Request.Scheme);
+        var redirectToUrl = Url.Action("ExternalAccessCallback", "Accounts", new { ReturnUrl = returnUrl});
         var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectToUrl);
         return Challenge(properties, provider);
     }
 
-    [HttpPost]
+    [HttpGet]
     [AllowAnonymous]
-    [ValidateAntiForgeryToken]
     public async Task<IActionResult> ExternalAccessCallback(string returnUrl = null, string error = null)
     {
         returnUrl ??= Url.Content("~/");
@@ -253,7 +252,7 @@ public class AccountsController : Controller
         }
 
         var info = await _signInManager.GetExternalLoginInfoAsync();
-        if (info != null)
+        if (info == null)
         {
             return RedirectToAction(nameof(Login));
         }
@@ -282,7 +281,7 @@ public class AccountsController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> ExternalAccessConfirmation(ExternalAccessConfirmationViewModel externalAccessConfirmationViewModel, string returnUrl = null)
     {
-        returnUrl = returnUrl ?? Url.Content("~/");
+        returnUrl ??= Url.Content("~/");
 
         if (ModelState.IsValid)
         {

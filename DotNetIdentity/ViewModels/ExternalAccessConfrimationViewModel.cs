@@ -9,6 +9,5 @@ public class ExternalAccessConfirmationViewModel
     public string Email { get; set; }
 
     [Required]
-    [EmailAddress]
     public string Name { get; set; }
 }

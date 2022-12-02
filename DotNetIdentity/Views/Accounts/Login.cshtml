@@ -70,13 +70,28 @@
                             <p>
                                 @foreach (var provider in loginProviders)
                                 {
-                                    <button type="submit" 
-                                            class="btn btn-primary w-100" 
-                                            name="provider" 
-                                            value="@provider.Name" 
-                                            title="Acceda usando su cuenta de @provider.Name">
-                                        @provider.Name
-                                    </button>
+                                    @if (provider.Name == "Facebook") {
+                                        <button type="submit" 
+                                                class="btn btn-outline-primary w-100" 
+                                                name="provider" 
+                                                value="@provider.Name" 
+                                                title="Acceda usando su cuenta de @provider.Name">
+                                            <i class="bi bi-facebook"></i>
+                                            @provider.Name
+                                        </button>
+                                    }
+                                    
+                                    @if (provider.Name == "Google")
+                                    {
+                                        <button type="submit"
+                                                class="btn btn-outline-danger w-100 mt-4"
+                                                name="provider"
+                                                value="@provider.Name"
+                                                title="Acceda usando su cuenta de @provider.Name">
+                                            <i class="bi bi-google"></i>
+                                            @provider.Name
+                                        </button>
+                                    }
                                 }
                             </p>
                         </div>
